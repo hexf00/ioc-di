@@ -1,3 +1,8 @@
+## 安装
+```
+$ npm install git+https://github.com/gityoog/ioc-di.git --save
+```
+
 ## 使用
  - 使用 `@Root()` 装饰器为当前类添加一个顶层容器 会依次初始化所有可注入类和子容器
  - 使用 `@Service()` 装饰器标记当前类为可注入类
@@ -7,11 +12,12 @@
  - 初始化容器和注入信息是发生在构造函数之后 所以当需要第一时间访问注入属性的时 请使用 `@Already` 装饰器
  - 当可注入类实例为手动初始化时 可使用 `Concat` 函数使目标实例使用当前实例的容器
  - 使用 `@Container()` 可使当前类使用一个独立的子容器
- - *待开发 `@Destroy` 使当前函数为销毁函数 调用此函数会使挂载在当前实例的容器销毁 并销毁其创建的其他实例
+ - `@Destroy` 使当前函数为销毁函数 调用此函数会使挂载在当前实例的容器销毁 并销毁其创建的其他实例
 ```ts
 // file entry.ts
 
 @Root()
+@Service()
 class Entry {
   @Inject() service!: Service
 }
@@ -49,7 +55,7 @@ class Foo {
   @InjectRef(() => Foo2) foo2!: Foo2
   
   method() {
-    this.foo2.method()
+    console.log(this.foo2)
   }
 }
 
@@ -60,7 +66,7 @@ class Foo2 {
   @InjectRef(() => Foo) foo!: Foo
 
   method() {
-    this.foo.method()
+    console.log(this.foo)
   }
 }
 
@@ -72,3 +78,6 @@ class Foo3 {
 
 }
 ```
+
+## 运行流程
+ ![image](./img/structure.svg)
